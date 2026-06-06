@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGSOFT Neon VIP Dashboard 2.0</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<style>
+/* ===== Reset & Base ===== */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{min-height:100vh;font-family:'Segoe UI',sans-serif;background:#0b0c20;color:#e0f5ff;overflow-x:hidden;}
+
+/* ===== Background Particle + Grid ===== */
+.bg-grid{
+    position:fixed; inset:0; z-index:-5;
+    background:
+        linear-gradient(135deg, rgba(102,240,255,0.03) 1px, transparent 1px),
+        linear-gradient(225deg, rgba(102,240,255,0.03) 1px, transparent 1px);
+    background-size:60px 60px;
+    animation: moveGrid 60s linear infinite;
+}
+@keyframes moveGrid{from{background-position:0 0,0 0;} to{background-position:600px 600px,-600px -600px;}}
+
+.particles{
+    position:fixed; inset:0; z-index:-4; pointer-events:none;
+}
+.particle{
+    position:absolute;
+    border-radius:50%;
+    opacity:0.7;
+    background: #33ccff;
+    animation: float 10s linear infinite;
+}
+@keyframes float{
+    0%{transform:translateY(0) scale(1);}
+    50%{transform:translateY(-50px) scale(1.3);}
+    100%{transform:translateY(0) scale(1);}
+}
+
+/* ===== Initial Intro ===== */
+.initial-view{
+    position:fixed; inset:0; display:flex; justify-content:center; align-items:center;
+    background:rgba(0,0,20,0.6); backdrop-filter:blur(14px); z-index:10; transition:opacity 0.5s ease;
+}
+.intro-card{
+    width:380px; padding:40px 32px; text-align:center; border-radius:32px;
+    background: rgba(0,15,40,0.9); border:1px solid rgba(102,240,255,0.25);
+    box-shadow:0 0 50px rgba(102,240,255,.5); cursor:pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    perspective:1000px;
+}
+.intro-card:hover{
+    transform: scale(1.06) rotateY(5deg);
+    box-shadow:0 0 80px rgba(102,240,255,.9);
+}
+.spinner{
+    width:70px; height:70px; border:4px solid rgba(255,255,255,.08);
+    border-top:4px solid #66f0ff; border-radius:50%; margin:0 auto 20px;
+    animation:spin 1s linear infinite; box-shadow:0 0 35px #66f0ff,0 0 60px #33ccff inset;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ===== Main Content ===== */
+.main-content{display:none; padding:40px 20px; animation:fadeIn 0.8s ease forwards;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);}}
+
+/* Container Neon Glassmorphism */
+.container{
+    max-width:1250px; margin:auto; padding:32px; border-radius:28px;
+    background: rgba(0,10,25,0.95); border:1px solid rgba(102,240,255,0.2);
+    backdrop-filter:blur(18px);
+    box-shadow: 0 0 35px #33ccff inset,0 0 45px #66f0ff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.container:hover{transform:translateY(-4px); box-shadow:0 0 55px #33ccff inset,0 0 65px #66f0ff;}
+
+/* Neon Title + Flicker */
+h2{
+    font-size:28px; color:#66f0ff; text-shadow:
+    0 0 5px #66f0ff,0 0 15px #33ccff,0 0 20px #66f0ff;
+    animation: flicker 1.8s infinite;
+}
+@keyframes flicker{
+    0%,19%,21%,23%,25%,54%,56%,100%{opacity:1;}
+    20%,22%,24%,55%{opacity:0.4;}
+}
+
+/* Textarea Neon Glow */
+.border-glow-wrapper{
+    padding:3px; border-radius:20px; background:linear-gradient(135deg,#66f0ff,transparent,#33ccff);
+}
+textarea{
+    width:100%; min-height:240px; border:none; outline:none; border-radius:16px; padding:18px;
+    background:rgba(1,5,15,.95); color:#d0f0ff; font-size:16px;
+    box-shadow:0 0 15px rgba(102,240,255,.3) inset;
+}
+
+/* Buttons Neon Animated */
+.button-container{display:flex; gap:14px; margin:18px 0;}
+button{
+    border:none; cursor:pointer; border-radius:16px; padding:14px 24px;
+    color:white; font-weight:bold; background:linear-gradient(90deg,#66f0ff,#33ccff);
+    transition: all 0.3s ease; box-shadow:0 0 10px #66f0ff,0 0 25px #33ccff inset;
+    position:relative;
+    overflow:hidden;
+}
+button::after{
+    content:""; position:absolute; top:0; left:-100%; width:100%; height:100%;
+    background: rgba(255,255,255,0.15); transform: skewX(-20deg); transition:0.5s;
+}
+button:hover::after{left:200%;}
+button:hover{transform:translateY(-3px); box-shadow:0 0 25px #66f0ff,0 0 45px #33ccff inset;}
+
+/* Table Neon */
+.table-wrapper{width:100%; overflow-x:auto; border-radius:18px; margin-top:14px;}
+table{width:100%; border-collapse:collapse; min-width:1000px; background:rgba(0,0,20,0.95); border-radius:18px; box-shadow:0 0 35px #33ccff inset,0 0 45px #66f0ff;}
+th,td{padding:14px 12px; text-align:center; color:#e0f5ff; border-bottom:1px solid rgba(255,255,255,.05);}
+.btn-table{padding:10px 18px; border-radius:14px; background:linear-gradient(90deg,#66f0ff,#33ccff); color:#001010; font-size:13px; transition:all 0.3s ease;}
+.btn-table:hover{transform:translateY(-2px); box-shadow:0 0 15px #66f0ff,0 0 25px #33ccff inset;}
+
+/* Bonus Alert Cinematic */
+.alert-overlay{display:none; position:fixed; inset:0; z-index:20; justify-content:center; align-items:center; background:rgba(0,0,0,0.6); backdrop-filter:blur(6px);}
+.alert-box{
+    width:360px; padding:28px; text-align:center; border-radius:24px;
+    background:rgba(0,20,0,0.95); border:1px solid #33ffbb; color:#33ffbb;
+    box-shadow:0 0 35px #33ffbb inset,0 0 45px #33ffbb;
+    animation: pulse 1.2s infinite;
+}
+@keyframes pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.05);}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="particles" id="particles"></div>
+
+<div id="initialView" class="initial-view">
+    <div class="intro-card" onclick="showMainContent()">
+        <div class="spinner"></div>
+        <h2>BONUS SCATTER PGSOFT</h2>
+        <p>Klik Disini untuk melanjutkan</p>
+    </div>
+</div>
+
+<div id="mainContent" class="main-content">
+    <div class="container">
+        <h2>Data Transaksi</h2>
+        <div class="border-glow-wrapper">
+            <textarea id="inputData" placeholder="Tempelkan data transaksi kamu di sini..."></textarea>
+        </div>
+        <div class="button-container">
+            <button onclick="prosesData()"><i class="fas fa-play-circle"></i> Proses Data</button>
+            <button onclick="resetData()"><i class="fas fa-sync-alt"></i> Reset</button>
+        </div>
+        <div class="table-wrapper">
+            <table id="resultTable" style="display:none;">
+                <thead><tr><th>USER ID</th><th>NAMA</th><th>NO REK</th><th>PERMAINAN</th><th>TICKET</th><th>TOTAL</th><th>TARUHAN</th><th>SALIN</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="bonusAlert" class="alert-overlay">
+        <div class="alert-box">
+            <div class="alert-title">Kemenangan Memenuhi Syarat Claim Bonus Harian Slot!</div>
+            <button class="btn-table" onclick="closeBonusAlert()">Tutup</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== Particle Generator =====
+const particlesContainer=document.getElementById("particles");
+for(let i=0;i<60;i++){
+    const p=document.createElement("div");
+    p.classList.add("particle");
+    p.style.width=p.style.height=Math.random()*6+2+"px";
+    p.style.top=Math.random()*100+"%";
+    p.style.left=Math.random()*100+"%";
+    p.style.animationDuration=(Math.random()*10+5)+"s";
+    p.style.opacity=Math.random()*0.5+0.3;
+    particlesContainer.appendChild(p);
+}
+
+// ===== Main JS =====
+function showMainContent(){
+    document.getElementById("initialView").style.opacity="0";
+    setTimeout(()=>{
+        document.getElementById("initialView").style.display="none";
+        document.getElementById("mainContent").style.display="block";
+    },400);
+}
+function closeBonusAlert(){document.getElementById("bonusAlert").style.display="none";}
+function resetData(){
+    document.getElementById("inputData").value="";
+    document.getElementById("resultTable").style.display="none";
+    document.querySelector("#resultTable tbody").innerHTML="";
+    closeBonusAlert();
+}
+function prosesData(){
+    const input=document.getElementById("inputData").value.trim();
+    if(input===""){alert("Harap inputkan data!"); return;}
+    const lines=input.split(/\n/).map(x=>x.trim()).filter(Boolean);
+    let permainan=deteksiPermainan(lines);
+    let userId=deteksiUserId(lines);
+    let kodeTicket=deteksiKodeTicket(lines,input);
+    let totalCredit=hitungTotalCredit(lines);
+    let nilaiTaruhan=deteksiDebit(lines);
+    const totalKemenangan=formatNominal(totalCredit);
+    const dataUntukDisalin=`${userId}\t-\t-\t${permainan}\t${kodeTicket}\t${totalKemenangan}\t${nilaiTaruhan}`;
+    const tbody=document.querySelector("#resultTable tbody");
+    tbody.innerHTML="";
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${userId}</td><td>-</td><td>-</td><td>${permainan}</td><td>${kodeTicket}</td><td>${totalKemenangan}</td><td>${nilaiTaruhan}</td><td><button class="btn-table" data-copy="${dataUntukDisalin}" onclick="salinData(this)"><i class="fas fa-copy"></i> Salin</button></td>`;
+    tbody.appendChild(tr);
+    document.getElementById("resultTable").style.display="table";
+    if(totalCredit>=parseNominal(nilaiTaruhan)*300){document.getElementById("bonusAlert").style.display="flex";}
+}
+function salinData(btn){
+    const text=btn.getAttribute('data-copy');
+    const blob=new Blob([text],{type:'text/plain'});
+    const item=new ClipboardItem({'text/plain':blob});
+    navigator.clipboard.write([item]).then(()=>{
+        btn.innerHTML='<i class="fas fa-check"></i> Tersalin';
+        setTimeout(()=>{btn.innerHTML='<i class="fas fa-copy"></i> Salin';},1200);
+    });
+}
+
+// ===== Helper Functions =====
+function deteksiPermainan(lines){const providers=["pgsoft","pragmatic play","habanero","spadegaming","jili","cq9","microgaming","playtech","nolimit","joker","fa chai","fastspin","yggdrasil","red tiger","relax gaming","netent","rtg","slot88","playstar","advantplay","live22","bigpot","skywind","ttg","onetouch","dragoon soft","funky games","playngo","booming games","evoplay","simpleplay"];for(let i=0;i<lines.length-1;i++){if(providers.some(p=>lines[i+1].toLowerCase().includes(p))){return lines[i];}}return "-";}
+function deteksiUserId(lines){for(let i=0;i<lines.length;i++){if(lines[i].toLowerCase().startsWith("ext. id")){if(lines[i+1]) return lines[i+1];}}return "-";}
+function deteksiKodeTicket(lines,input){let k="-";for(let i=0;i<lines.length;i++){if(lines[i].toLowerCase()==="debit"){for(let j=i-1;j>=0;j--){const m=lines[j].match(/^(\d+)-\d+-201-0$/);if(m){return m[1];}}}} const mc=input.match(/CR\d+-(\d+)-101-0/i); if(mc) return mc[1]; const me=input.match(/Ext\.\s*ID\s*:\s*(?:CR)?\d+-(\d+)-(?:101|201)-0/i); if(me) return me[1]; return k;}
+function hitungTotalCredit(lines){let t=0;for(let i=0;i<lines.length;i++){if(lines[i].toLowerCase()==="credit"){t+=parseNominal(lines[i+1]||"");}}return t;}
+function deteksiDebit(lines){for(let i=0;i<lines.length;i++){if(lines[i].toLowerCase()==="debit"){return formatNominal(parseNominal(lines[i+1]||""));}}return "-";}
+function parseNominal(text){return Number(text.replace(/IDR|RP/gi,"").replace(/[^0-9]/g,""))||0;}
+function formatNominal(num){return Number(num).toLocaleString("en-US");}
+</script>
+</body>
+</html>
