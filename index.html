@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BONUS SCATTER PG SOFT</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:'Segoe UI', sans-serif;
+  color:#e0f5ff;
+  background:#0b0c20;
+  overflow-x:hidden;
+}
+
+/* background grid & moving lights */
+.bg-grid{
+  position:fixed; inset:0; z-index:-5;
+  background: linear-gradient(135deg, rgba(102,240,255,0.03) 1px, transparent 1px),
+              linear-gradient(225deg, rgba(102,240,255,0.03) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+
+.light{
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#66f0ff;
+  opacity:0.5;
+  animation:floatLight 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatLight{
+  0%{transform:translateY(0px) translateX(0px);}
+  50%{transform:translateY(-20px) translateX(15px);}
+  100%{transform:translateY(0px) translateX(0px);}
+}
+
+/* glow orbs */
+.glow-orb{
+  position:fixed;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:.25;
+  z-index:-4;
+}
+.orb-1{background:#66f0ff;top:5%;left:5%;}
+.orb-2{background:#3399ff;right:5%;bottom:10%;}
+.orb-3{background:#66ccff;left:50%;bottom:-100px;}
+
+/* initial view */
+.initial-view{
+  position:fixed; inset:0;
+  display:flex; justify-content:center; align-items:center;
+  background:rgba(0,0,20,0.6);
+  backdrop-filter:blur(10px);
+  z-index:10;
+}
+.intro-card{
+  width:360px; padding:40px 32px;
+  text-align:center;
+  border-radius:28px;
+  background: rgba(0,15,40,0.85);
+  border:1px solid rgba(102,240,255,0.25);
+  box-shadow:0 0 45px rgba(102,240,255,.3);
+  cursor:pointer;
+  transform:translateZ(0);
+}
+.spinner{
+  width:70px; height:70px;
+  border:4px solid rgba(255,255,255,.08);
+  border-top:4px solid #66f0ff;
+  border-radius:50%;
+  margin:0 auto 20px;
+  animation:spin 1s linear infinite;
+  box-shadow:0 0 25px #66f0ff;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.intro-card h2{margin:0; color:#66f0ff; font-size:26px; text-shadow:0 0 10px #66f0ff;}
+.intro-card p{color:#b9faff; font-size:15px; margin:8px 0 0;}
+.tap-badge{
+  display:inline-block;
+  margin-top:16px;
+  padding:10px 18px;
+  border-radius:999px;
+  font-size:14px;
+  color:#001010;
+  background: linear-gradient(90deg,#66f0ff,#33ccff);
+  font-weight:bold;
+  box-shadow:0 0 20px #66f0ff;
+}
+
+/* main content */
+.main-content{display:none;padding:40px 20px;}
+.container{
+  max-width:1250px;
+  margin:auto;
+  padding:32px;
+  border-radius:28px;
+  background: rgba(0,10,25,0.9);
+  border:1px solid rgba(102,240,255,0.2);
+  box-shadow:0 0 50px rgba(102,240,255,0.1), inset 0 0 20px rgba(102,240,255,0.03);
+  backdrop-filter:blur(15px);
+}
+
+.header-box{
+  display:flex; align-items:center; gap:16px; margin-bottom:24px;
+}
+.logo-glow{
+  width:70px; height:70px; border-radius:16px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:28px;
+  background:linear-gradient(135deg,#66f0ff,#33ccff);
+  box-shadow:0 0 20px rgba(102,240,255,.25);
+}
+.subtitle{margin:6px 0 0; color:#b9faff; font-size:15px;}
+
+/* info panel */
+.info-panel{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:20px;}
+.info-panel div{
+  padding:12px 16px; border-radius:16px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(102,240,255,.08);
+  color:#c9fbff; font-size:13px;
+}
+
+/* textarea */
+.border-glow-wrapper{padding:3px; border-radius:20px; background:linear-gradient(135deg,#66f0ff,transparent,#33ccff); box-shadow:0 0 22px rgba(102,240,255,.12);}
+textarea{
+  width:100%; min-height:240px;
+  border:none; outline:none; border-radius:16px;
+  padding:18px; background:rgba(1,5,15,.95);
+  color:#d0f0ff; font-size:16px; line-height:1.6;
+}
+textarea::placeholder{color:#7895a7;}
+
+/* buttons */
+.button-container{display:flex; gap:14px; margin:18px 0; flex-wrap:wrap;}
+button{
+  border:none; cursor:pointer; border-radius:16px;
+  padding:14px 24px; color:white; font-weight:bold; font-size:15px;
+  background:linear-gradient(90deg,#66f0ff,#33ccff);
+  box-shadow:0 0 25px rgba(102,240,255,.2);
+  transition:.3s;
+}
+button:hover{transform:translateY(-2px); box-shadow:0 0 40px rgba(102,240,255,.25);}
+.button-container button:nth-child(2){background:linear-gradient(90deg,#66aaff,#3399ff);}
+
+/* table */
+.table-wrapper{width:100%; overflow-x:auto; border-radius:18px; margin-top:14px;}
+table{width:100%; border-collapse:collapse; min-width:1000px; background:rgba(0,0,20,0.95); border-radius:18px; position:relative;}
+/* neon table header */
+table thead th{
+  position: relative;
+  color:#d0f0ff;
+  background: rgba(0,30,60,0.8);
+  border-bottom: 1px solid rgba(102,240,255,0.3);
+  box-shadow: 0 0 8px #66f0ff;
+}
+table thead th::after{
+  content: '';
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  box-shadow: 0 0 15px #66f0ff, 0 0 25px #33ccff;
+  opacity:0.5; border-radius:4px;
+  animation: neonPulse 2.5s infinite alternate;
+}
+@keyframes neonPulse{
+  0%{opacity:0.3; box-shadow:0 0 10px #66f0ff, 0 0 20px #33ccff;}
+  50%{opacity:0.5; box-shadow:0 0 18px #66f0ff, 0 0 28px #33ccff;}
+  100%{opacity:0.3; box-shadow:0 0 10px #66f0ff, 0 0 20px #33ccff;}
+}
+
+/* row hover glow */
+tbody tr:hover{background: rgba(102,240,255,0.1); box-shadow: inset 0 0 12px #66f0ff;}
+th,td{padding:14px 12px; text-align:center; color:#e0f5ff; border-bottom:1px solid rgba(255,255,255,.05);}
+.btn-table{padding:10px 18px; border-radius:14px; background:linear-gradient(90deg,#66f0ff,#33ccff); color:#001010;}
+
+/* alert bonus */
+.alert-overlay{display:none; position:fixed; inset:0; z-index:20; justify-content:center; align-items:center; background:rgba(0,0,0,0.55); backdrop-filter:blur(6px);}
+.alert-box{width:360px; max-width:90%; padding:28px; text-align:center; border-radius:24px; background:rgba(0,20,0,0.95); border:1px solid #33ffbb; box-shadow:0 0 50px #33ffbb; color:#33ffbb; animation:fadeIn 0.4s ease-out;}
+.alert-icon{font-size:38px; margin-bottom:12px;}
+.alert-title{font-weight:700; line-height:1.4; margin-bottom:14px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px);} to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:700px){.container{padding:18px} .header-box{flex-direction:column; text-align:center} .button-container button{width:100%}}
+</style>
+</head>
+
+<body>
+<div class="bg-grid"></div>
+<div class="glow-orb orb-1"></div>
+<div class="glow-orb orb-2"></div>
+<div class="glow-orb orb-3"></div>
+<div class="light" style="top:10%; left:15%; animation-duration:6s;"></div>
+<div class="light" style="top:30%; left:70%; animation-duration:7s;"></div>
+<div class="light" style="top:60%; left:45%; animation-duration:8s;"></div>
+
+<div id="initialView" class="initial-view">
+  <div class="intro-card" onclick="showMainContent()">
+    <div class="spinner"></div>
+    <h2>BONUS SCATTER PGSOFT</h2>
+    <p>Klik Disini untuk melanjutkan</p>
+    <span class="tap-badge"><i class="fas fa-hand-pointer"></i> START </span>
+  </div>
+</div>
+
+<div id="mainContent" class="main-content">
+  <div class="container">
+    <div class="header-box">
+      <div class="logo-glow"><i class="fas fa-gem"></i></div>
+      <div><h2>BONUS SCATTER</h2><p class="subtitle">Semua permainan PG Soft</p></div>
+    </div>
+    <div class="info-panel">
+      <div><i class="fas fa-shield-alt"></i> </div>
+      <div><i class="fas fa-gamepad"></i> </div>
+      <div><i class="fas fa-bolt"></i> </div>
+      <div><i class="fas fa-copy"></i> </div>
+    </div>
+    <div class="border-glow-wrapper"><textarea id="inputData" placeholder="Tempelkan data transaksi kamu di sini..."></textarea></div>
+    <div class="button-container">
+      <button onclick="prosesData()"><i class="fas fa-play-circle"></i> Proses Data</button>
+      <button onclick="resetData()"><i class="fas fa-sync-alt"></i> Reset</button>
+    </div>
+    <div id="warningMessage" class="warning" style="display:none;"><i class="fas fa-exclamation-circle"></i> Harap inputkan data terlebih dahulu!</div>
+    <div class="table-wrapper">
+      <table id="resultTable" style="display:none;">
+        <thead>
+          <tr>
+            <th>USER ID</th><th>NAMA REKENING</th><th>NOMOR REKENING</th><th>PERMAINAN</th><th>KODE TICKET</th><th>TOTAL KEMENANGAN</th><th>NILAI TARUHAN</th><th>SALIN</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="bonusAlert" class="alert-overlay">
+    <div class="alert-box">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-title">Kemenangan Memenuhi Syarat Claim Bonus Harian Slot!</div>
+      <button class="btn-table" onclick="closeBonusAlert()">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showMainContent(){document.getElementById("initialView").style.display="none";document.getElementById("mainContent").style.display="block";}
+function closeBonusAlert(){document.getElementById("bonusAlert").style.display="none";}
+function resetData(){document.getElementById("inputData").value="";document.getElementById("warningMessage").style.display="none";document.getElementById("resultTable").style.display="none";document.querySelector("#resultTable tbody").innerHTML="";closeBonusAlert();}
+
+function prosesData(){
+  const input=document.getElementById("inputData").value.trim();
+  if(input===""){document.getElementById("warningMessage").style.display="block";document.getElementById("resultTable").style.display="none";return;}
+  document.getElementById("warningMessage").style.display="none";
+  const lines=input.split(/\n/).map(x=>x.trim()).filter(Boolean);
+  let permainan=deteksiPermainan(lines);
+  let userId=deteksiUserId(lines);
+  let kodeTicket=deteksiKodeTicket(lines,input);
+  let totalCredit=hitungTotalCredit(lines);
+  let nilaiTaruhan=deteksiDebit(lines);
+  const totalKemenangan=formatNominal(totalCredit);
+  const dataText=`${userId}\t-\t-\t${permainan}\t${kodeTicket}\t${totalKemenangan}\t${nilaiTaruhan}`;
+
+  const tbody=document.querySelector("#resultTable tbody");
+  tbody.innerHTML="";
+  const tr=document.createElement("tr");
+  tr.innerHTML=`<td>${userId}</td><td>-</td><td>-</td><td>${permainan}</td><td>${kodeTicket}</td><td>${totalKemenangan}</td><td>${nilaiTaruhan}</td><td><button class="btn-table" onclick="salinData(this)"><i class="fas fa-copy"></i> Salin</button></td>`;
+  tbody.appendChild(tr);
+  document.getElementById("resultTable").style.display="table";
+
+  const taruhan=parseNominal(nilaiTaruhan);
+  if(totalCredit>=taruhan*300){document.getElementById("bonusAlert").style.display="flex";} else {closeBonusAlert();}
+}
+
+function deteksiPermainan(lines){const providers=["pgsoft","pragmatic play","habanero","spadegaming","jili","cq9","microgaming","playtech","nolimit","joker","fa chai","fastspin","yggdrasil","red tiger","relax gaming","netent","rtg","slot88","playstar","advantplay","live22","bigpot","skywind","ttg","onetouch","dragoon soft","funky games","playngo","booming games","evoplay","simpleplay"];for(let i=0;i<lines.length-1;i++){if(providers.some(p=>lines[i+1].toLowerCase().includes(p))){return lines[i];}}return "-";}
+function deteksiUserId(lines){for(let i=0;i<lines.length;i++){if(lines[i].toLowerCase().startsWith("ext. id")){if(lines[i+1]) return lines[i+1];}}return "-";}
+function deteksiKodeTicket(lines,input){let k="-";for(let i=0;i<lines.length;i++){if(lines[i].toLowerCase()==="debit"){for(let j=i-1;j>=0;j--){const m=lines[j].match(/^(\d+)-\d+-201-0$/);if(m){return m[1];}}}} const mc=input.match(/CR\d+-(\d+)-101-0/i); if(mc) return mc[1]; const me=input.match(/Ext\.\s*ID\s*:\s*(?:CR)?\d+-(\d+)-(?:101|201)-0/i); if(me) return me[1]; return k;}
+function hitungTotalCredit(lines){let t=0;for(let i=0;i<lines.length;i++){if(lines[i].toLowerCase()==="credit"){t+=parseNominal(lines[i+1]||"");}}return t;}
+function deteksiDebit(lines){for(let i=0;i<lines.length;i++){if(lines[i].toLowerCase()==="debit"){return formatNominal(parseNominal(lines[i+1]||""));}}return "-";}
+function parseNominal(text){return Number(text.replace(/IDR|RP/gi,"").replace(/[^0-9]/g,""))||0;}
+function formatNominal(num){return Number(num).toLocaleString("en-US");}
+function salinData(btn){navigator.clipboard.writeText(btn.dataset.copy).then(()=>{btn.innerHTML='<i class="fas fa-check"></i> Tersalin';setTimeout(()=>{btn.innerHTML='<i class="fas fa-copy"></i> Salin';},1200);});}
+</script>
+</body>
+</html>
