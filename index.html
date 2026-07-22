@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aplikasi Konverter Transaksi Pro</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+  <div id="initialView" class="initial-view" onclick="showMainContent()">
+    <div class="spinner"></div>
+    <h2>CLICK HERE </h2>
+    <p style="color: #92a4b3; font-size: 14px; letter-spacing: 1px;">Klik di mana saja untuk melanjutkan</p>
+  </div>
+
+  <div id="mainContent" class="main-content">
+    <div class="container">
+      
+      <div class="tab-container">
+        <button id="tabSlot" class="tab-btn active" onclick="switchFormula('slot')"><i class="fas fa-cube"></i> HARIAN SLOT</button>
+        <button id="tabMahjong" class="tab-btn" onclick="switchFormula('mahjong')"><i class="fas fa-fire"></i> BONUS SCATTER</button>
+      </div>
+
+      <div id="sectionSlot" class="formula-section active">
+        <h2>HARIAN SLOT</h2>
+        <div class="border-glow-wrapper">
+          <textarea id="inputSlot" oninput="prosesSlot()" placeholder="Tempel data transaksi Harian Slot di sini..."></textarea>
+        </div>
+        <div class="button-container">
+          <button id="btnCopySlot" onclick="salinSlotBody()"><i class="fas fa-copy"></i> SALIN DATA</button>
+          <button onclick="resetSlot()"><i class="fas fa-sync-alt"></i> RESET</button>
+        </div>
+        <div class="output-container" id="outputSlot">
+          <p class="empty-output">Menunggu data ditempel...</p>
+        </div>
+      </div>
+
+      <div id="sectionMahjong" class="formula-section">
+        <h2>BONUS SCATTER MAHJONG</h2>
+        <div class="border-glow-wrapper">
+          <textarea id="inputMahjong" oninput="prosesMahjong()" placeholder="Tempelkan data transaksi Mahjong di sini..."></textarea>
+        </div>
+        <div class="button-container">
+          <button id="btnCopyMahjong" onclick="salinMahjongBody()"><i class="fas fa-copy"></i> SALIN DATA</button>
+          <button onclick="resetMahjong()"><i class="fas fa-sync-alt"></i> RESET</button>
+        </div>
+
+        <div class="conversion-toggle-panel">
+          <div class="conversion-toggle-copy">
+            <span class="conversion-toggle-icon" aria-hidden="true"><i class="fas fa-table-columns"></i></span>
+            <span>
+              <strong>Konversi ke Format Harian Slot</strong>
+              <small>Ubah tampilan tabel tanpa memproses ulang data</small>
+            </span>
+          </div>
+
+          <label class="premium-switch" for="toggleMahjongToSlot">
+            <input
+              id="toggleMahjongToSlot"
+              type="checkbox"
+              onchange="toggleMahjongFormat()"
+              aria-label="Konversi ke Format Harian Slot"
+            >
+            <span class="premium-switch-track" aria-hidden="true">
+              <span class="premium-switch-thumb"><i class="fas fa-check"></i></span>
+            </span>
+            <span class="premium-switch-state" data-off="OFF" data-on="ON" aria-hidden="true"></span>
+          </label>
+        </div>
+
+        <div class="output-container" id="outputMahjong">
+          <p class="empty-output">Menunggu data ditempel...</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="bonusAlert" class="alert-overlay">
+    <div class="alert-box">
+      <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
+      <div style="font-weight: 600; margin-bottom: 15px; line-height: 1.4;">Kemenangan Memenuhi Syarat Claim Bonus Harian Slot!</div>
+      <button onclick="closeBonusAlert()">Tutup</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
