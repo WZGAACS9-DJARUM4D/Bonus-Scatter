@@ -1,834 +1,91 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rumus PG Soft</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg:#050b16;
-      --panel:#0b1424;
-      --panel-soft:#101d31;
-      --line:rgba(255,255,255,.10);
-      --text:#f8fbff;
-      --muted:#9bacbf;
-      --cyan:#66d9ff;
-      --blue:#2f7cff;
-      --gold:#e9c66a;
-      --success:#2fd078;
-      --danger:#ef5b67;
-    }
-
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
-
-    html{
-      scroll-behavior:smooth;
-    }
-
-    body{
-      min-height:100vh;
-      padding:42px 20px;
-      position:relative;
-      isolation:isolate;
-      overflow-x:hidden;
-      font-family:'Outfit',Arial,sans-serif;
-      color:var(--text);
-      background-color:#050b16;
-      background-image:url("https://i.postimg.cc/PqqZd2Sr/download-(5).jpg");
-      background-size:cover;
-      background-position:center center;
-      background-repeat:no-repeat;
-      background-attachment:fixed;
-    }
-
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      z-index:1;
-      pointer-events:none;
-      background:rgba(2,7,17,.20);
-    }
-
-    .video-background{
-      width:100%;
-      height:100%;
-      position:fixed;
-      inset:0;
-      z-index:0;
-      object-fit:cover;
-      object-position:center center;
-      pointer-events:none;
-    }
-
-    .app{
-      width:min(1180px,100%);
-      margin:auto;
-      padding:12px;
-      position:relative;
-      z-index:2;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.13);
-      border-radius:36px;
-      background:rgba(5,14,28,.18);
-      box-shadow:
-        0 30px 90px rgba(0,0,0,.30),
-        0 0 0 1px rgba(102,217,255,.055),
-        inset 0 1px 0 rgba(255,255,255,.10);
-      backdrop-filter:blur(5px);
-      -webkit-backdrop-filter:blur(5px);
-    }
-
-    .app::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      padding:1px;
-      border-radius:36px;
-      pointer-events:none;
-      background:linear-gradient(135deg,
-        rgba(102,217,255,.78),
-        rgba(255,255,255,.08) 28%,
-        transparent 48%,
-        rgba(233,198,106,.50) 78%,
-        rgba(102,217,255,.38));
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite:xor;
-      mask-composite:exclude;
-      opacity:.70;
-    }
-
-    .app::after{
-      content:"";
-      position:absolute;
-      top:-120px;
-      left:50%;
-      width:64%;
-      height:180px;
-      transform:translateX(-50%);
-      border-radius:50%;
-      pointer-events:none;
-      background:rgba(102,217,255,.13);
-      filter:blur(42px);
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      margin-bottom:12px;
-      padding:15px 18px;
-      position:relative;
-      z-index:2;
-      border:1px solid rgba(255,255,255,.09);
-      border-radius:23px;
-      background:linear-gradient(135deg,rgba(8,20,38,.24),rgba(8,20,38,.10));
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.045),
-        0 12px 30px rgba(0,0,0,.20);
-      backdrop-filter:blur(4px);
-      -webkit-backdrop-filter:blur(4px);
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
-
-    .brand-logo{
-      width:142px;
-      max-height:52px;
-      object-fit:contain;
-      filter:drop-shadow(0 0 12px rgba(102,217,255,.25));
-    }
-
-    .brand-copy strong{
-      display:block;
-      font-size:15px;
-      letter-spacing:.5px;
-    }
-
-    .brand-copy span{
-      display:block;
-      margin-top:3px;
-      color:var(--muted);
-      font-size:12px;
-    }
-
-    .status{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:9px 13px;
-      border:1px solid rgba(47,208,120,.24);
-      border-radius:999px;
-      color:#b7f4d2;
-      background:rgba(47,208,120,.08);
-      font-size:12px;
-      font-weight:700;
-    }
-
-    .status-dot{
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:var(--success);
-      box-shadow:0 0 12px rgba(47,208,120,.8);
-    }
-
-    .hero{
-      position:relative;
-      z-index:2;
-      overflow:hidden;
-      padding:40px 36px;
-      margin-bottom:12px;
-      border:1px solid rgba(255,255,255,.095);
-      border-radius:25px;
-      background:
-        radial-gradient(circle at 86% 18%,rgba(233,198,106,.10),transparent 28%),
-        linear-gradient(118deg,rgba(47,124,255,.10),transparent 42%),
-        linear-gradient(145deg,rgba(7,16,30,.18),rgba(7,15,28,.08));
-      backdrop-filter:blur(3px);
-      -webkit-backdrop-filter:blur(3px);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.045),
-        0 18px 42px rgba(0,0,0,.24);
-    }
-
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background:linear-gradient(110deg,transparent 15%,rgba(255,255,255,.045) 42%,transparent 68%);
-      transform:translateX(-58%);
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      width:260px;
-      height:260px;
-      right:-105px;
-      top:-120px;
-      border-radius:50%;
-      background:rgba(233,198,106,.14);
-      filter:blur(18px);
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      margin-bottom:14px;
-      color:var(--gold);
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:2px;
-      text-transform:uppercase;
-    }
-
-    .hero h1{
-      max-width:760px;
-      font-size:clamp(30px,5vw,54px);
-      line-height:1.02;
-      letter-spacing:-1.6px;
-    }
-
-    .hero h1 span{
-      color:var(--cyan);
-    }
-
-    .hero p{
-      max-width:720px;
-      margin-top:14px;
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.7;
-    }
-
-    .workspace{
-      padding:28px;
-      position:relative;
-      z-index:2;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.095);
-      border-radius:25px;
-      background:linear-gradient(180deg,rgba(8,18,34,.24),rgba(5,13,26,.14));
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.045),
-        0 18px 42px rgba(0,0,0,.24);
-      backdrop-filter:blur(4px);
-      -webkit-backdrop-filter:blur(4px);
-    }
-
-    .workspace::before{
-      content:"";
-      position:absolute;
-      top:0;
-      left:8%;
-      right:8%;
-      height:1px;
-      background:linear-gradient(90deg,transparent,rgba(102,217,255,.48),rgba(233,198,106,.34),transparent);
-      box-shadow:0 0 18px rgba(102,217,255,.25);
-    }
-
-    .section-head{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:14px;
-    }
-
-    .section-head h2{
-      font-size:21px;
-    }
-
-    .section-head p{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .mini-label{
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid rgba(102,217,255,.18);
-      color:#b9edff;
-      background:rgba(102,217,255,.07);
-      font-size:11px;
-      font-weight:700;
-      white-space:nowrap;
-    }
-
-    textarea{
-      width:100%;
-      min-height:230px;
-      padding:18px;
-      resize:vertical;
-      outline:none;
-      border:1px solid rgba(255,255,255,.11);
-      border-radius:18px;
-      color:#fff;
-      background:rgba(7,16,30,.82);
-      font:500 14px/1.65 'Outfit',Arial,sans-serif;
-      box-shadow:inset 0 0 30px rgba(0,0,0,.28);
-      transition:.2s ease;
-    }
-
-    textarea:focus{
-      border-color:rgba(102,217,255,.65);
-      box-shadow:0 0 0 4px rgba(102,217,255,.08),inset 0 0 30px rgba(0,0,0,.28);
-    }
-
-    textarea::placeholder{
-      color:#64758b;
-    }
-
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin:16px 0 24px;
-    }
-
-    button{
-      border:none;
-      border-radius:13px;
-      padding:12px 18px;
-      cursor:pointer;
-      font-family:inherit;
-      font-size:13px;
-      font-weight:800;
-      transition:.2s ease;
-    }
-
-    button:hover{
-      transform:translateY(-2px);
-    }
-
-    .btn-primary{
-      color:#03101a;
-      background:linear-gradient(135deg,var(--cyan),#8de7ff);
-      box-shadow:0 9px 24px rgba(102,217,255,.18);
-    }
-
-    .btn-reset{
-      color:#d9e3ef;
-      border:1px solid var(--line);
-      background:#121d2c;
-    }
-
-    .table-title{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      margin-bottom:12px;
-    }
-
-    .table-title h3{
-      font-size:17px;
-    }
-
-    .table-title span{
-      color:var(--muted);
-      font-size:12px;
-    }
-
-    .table-wrapper{
-      overflow-x:auto;
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:rgba(7,16,30,.72);
-    }
-
-    table{
-      width:100%;
-      min-width:980px;
-      border-collapse:collapse;
-    }
-
-    th,
-    td{
-      padding:14px 13px;
-      text-align:center;
-      border-bottom:1px solid rgba(255,255,255,.07);
-    }
-
-    th{
-      color:#aebbd0;
-      background:rgba(13,24,40,.82);
-      font-size:11px;
-      font-weight:800;
-      letter-spacing:.7px;
-    }
-
-    td{
-      color:#f6f9fd;
-      font-size:13px;
-    }
-
-    tbody tr:hover{
-      background:rgba(102,217,255,.035);
-    }
-
-    .empty-row td{
-      padding:28px;
-      color:#728197;
-    }
-
-    .btn-copy{
-      padding:9px 13px;
-      color:#032114;
-      background:linear-gradient(135deg,#4ee195,var(--success));
-    }
-
-    .alert-overlay{
-      display:none;
-      position:fixed;
-      inset:0;
-      z-index:100;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      background:rgba(1,5,12,.72);
-      backdrop-filter:blur(8px);
-    }
-
-    .alert-box{
-      width:min(410px,100%);
-      padding:28px;
-      text-align:center;
-      border:1px solid rgba(233,198,106,.38);
-      border-radius:22px;
-      background:#0b1424;
-      box-shadow:0 22px 70px rgba(0,0,0,.48);
-    }
-
-    .alert-icon{
-      width:58px;
-      height:58px;
-      display:grid;
-      place-items:center;
-      margin:0 auto 15px;
-      border-radius:50%;
-      color:#2b2106;
-      background:linear-gradient(135deg,#ffe7a1,var(--gold));
-      font-size:25px;
-    }
-
-    .alert-title{
-      margin-bottom:8px;
-      font-size:20px;
-    }
-
-    .alert-box p{
-      margin-bottom:18px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.6;
-    }
-
-    .btn-close{
-      color:#06101b;
-      background:var(--cyan);
-    }
-
-    .toast{
-      position:fixed;
-      right:22px;
-      bottom:22px;
-      z-index:120;
-      padding:12px 16px;
-      border:1px solid rgba(47,208,120,.30);
-      border-radius:12px;
-      color:#c4f8dc;
-      background:rgba(8,32,22,.96);
-      box-shadow:0 14px 38px rgba(0,0,0,.35);
-      font-size:13px;
-      font-weight:700;
-      opacity:0;
-      pointer-events:none;
-      transform:translateY(12px);
-      transition:.25s ease;
-    }
-
-    .toast.show{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    @media(max-width:720px){
-      body{padding:16px 10px;}
-      .app{padding:8px;border-radius:26px;}
-      .app::before{border-radius:26px;}
-      .topbar{align-items:flex-start;border-radius:19px;}
-      .brand-logo{width:115px;}
-      .brand-copy{display:none;}
-      .status{font-size:10px;}
-      .hero{padding:28px 20px;border-radius:20px;}
-      .workspace{padding:20px 15px;border-radius:20px;}
-      .section-head{align-items:flex-start;flex-direction:column;}
-      .mini-label{white-space:normal;}
-      textarea{min-height:210px;}
-      .actions{display:grid;grid-template-columns:1fr 1fr;}
-      .actions button{width:100%;}
-      .table-title{align-items:flex-start;flex-direction:column;}
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aplikasi Konverter Transaksi Pro</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
 </head>
-
 <body>
-  <video class="video-background" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true">
-    <source src="https://v1.pinimg.com/videos/iht/expMp4/14/d9/0a/14d90a495223922f23fe56a2a320c557_720w.mp4" type="video/mp4">
-  </video>
 
-  <main class="app">
-    <header class="topbar">
-      <div class="brand">
-        <img class="brand-logo" src="https://cdn.bunkerkiamat.com/djarum4d/images/logo/Djarum4d.gif" alt="Djarum4D">
-        <div class="brand-copy">
-          <strong>PG Soft Report</strong>
-          <span>Wzgaacs9 • Aboy</span>
+  <div id="initialView" class="initial-view" onclick="showMainContent()">
+    <div class="spinner"></div>
+    <h2>CLICK HERE </h2>
+    <p style="color: #92a4b3; font-size: 14px; letter-spacing: 1px;">Klik di mana saja untuk melanjutkan</p>
+  </div>
+
+  <div id="mainContent" class="main-content">
+    <div class="container">
+      
+      <div class="tab-container">
+        <button id="tabSlot" class="tab-btn active" onclick="switchFormula('slot')"><i class="fas fa-cube"></i> HARIAN SLOT</button>
+        <button id="tabMahjong" class="tab-btn" onclick="switchFormula('mahjong')"><i class="fas fa-fire"></i> BONUS SCATTER</button>
+      </div>
+
+      <div id="sectionSlot" class="formula-section active">
+        <h2>HARIAN SLOT</h2>
+        <div class="border-glow-wrapper">
+          <textarea id="inputSlot" oninput="prosesSlot()" placeholder="Tempel data transaksi Harian Slot di sini..."></textarea>
+        </div>
+        <div class="button-container">
+          <button id="btnCopySlot" onclick="salinSlotBody()"><i class="fas fa-copy"></i> SALIN DATA</button>
+          <button onclick="resetSlot()"><i class="fas fa-sync-alt"></i> RESET</button>
+        </div>
+        <div class="output-container" id="outputSlot">
+          <p class="empty-output">Menunggu data ditempel...</p>
         </div>
       </div>
 
-      <div class="status">
-        <span class="status-dot"></span>
-        DJAMRUM ONLINE
-      </div>
-    </header>
-
-    <section class="hero">
-      <div class="eyebrow">
-        <i class="fa-solid fa-crown"></i>
-        BONUS REPORT
-      </div>
-      <h1>PG Soft <span>Bonus Scatter</span></h1>
-
-    <section class="workspace">
-      <div class="section-head">
-        <div>
-          <h2>Data Transaksi</h2>
-          <p>
+      <div id="sectionMahjong" class="formula-section">
+        <h2>BONUS SCATTER MAHJONG</h2>
+        <div class="border-glow-wrapper">
+          <textarea id="inputMahjong" oninput="prosesMahjong()" placeholder="Tempelkan data transaksi Mahjong di sini..."></textarea>
         </div>
-        <div class></div>
+        <div class="button-container">
+          <button id="btnCopyMahjong" onclick="salinMahjongBody()"><i class="fas fa-copy"></i> SALIN DATA</button>
+          <button onclick="resetMahjong()"><i class="fas fa-sync-alt"></i> RESET</button>
+        </div>
+
+        <div class="conversion-toggle-panel">
+          <div class="conversion-toggle-copy">
+            <span class="conversion-toggle-icon" aria-hidden="true"><i class="fas fa-table-columns"></i></span>
+            <span>
+              <strong>Konversi ke Format Harian Slot</strong>
+              <small>Ubah tampilan tabel tanpa memproses ulang data</small>
+            </span>
+          </div>
+
+          <label class="premium-switch" for="toggleMahjongToSlot">
+            <input
+              id="toggleMahjongToSlot"
+              type="checkbox"
+              onchange="toggleMahjongFormat()"
+              aria-label="Konversi ke Format Harian Slot"
+            >
+            <span class="premium-switch-track" aria-hidden="true">
+              <span class="premium-switch-thumb"><i class="fas fa-check"></i></span>
+            </span>
+            <span class="premium-switch-state" data-off="OFF" data-on="ON" aria-hidden="true"></span>
+          </label>
+        </div>
+
+        <div class="output-container" id="outputMahjong">
+          <p class="empty-output">Menunggu data ditempel...</p>
+        </div>
       </div>
 
-      <textarea id="inputData" placeholder="Tempelkan data transaksi di sini..."></textarea>
-
-      <div class="actions">
-        <button class="btn-primary" type="button" onclick="prosesData()">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Proses Data
-        </button>
-        <button class="btn-reset" type="button" onclick="resetData()">
-          <i class="fa-solid fa-rotate-left"></i> Reset
-        </button>
-      </div>
-
-      <div class="table-title">
-        <h3>Hasil Uraian</h3>
-        <span>
-      </div>
-
-      <div class="table-wrapper">
-        <table id="resultTable">
-          <thead>
-            <tr>
-              <th>USER ID</th>
-              <th>NAMA</th>
-              <th>NO REK</th>
-              <th>PERMAINAN</th>
-              <th>TICKET</th>
-              <th>TOTAL</th>
-              <th>TARUHAN</th>
-              <th>SALIN</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="empty-row">
-              <td colspan="8">Belum ada data yang diproses.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <div id="bonusAlert" class="alert-overlay" role="dialog" aria-modal="true">
-    <div class="alert-box">
-      <div class="alert-icon">
-        <i class="fa-solid fa-trophy"></i>
-      </div>
-      <h3 class="alert-title">Memenuhi Syarat Bonus</h3>
-      <p>Kemenangan mencapai minimal 300 kali nilai taruhan dan dapat diperiksa untuk claim bonus harian slot.</p>
-      <button class="btn-close" type="button" onclick="closeBonusAlert()">Tutup</button>
     </div>
   </div>
 
-  <div id="toast" class="toast">Data berhasil disalin.</div>
+  <div id="bonusAlert" class="alert-overlay">
+    <div class="alert-box">
+      <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
+      <div style="font-weight: 600; margin-bottom: 15px; line-height: 1.4;">Kemenangan Memenuhi Syarat Claim Bonus Harian Slot!</div>
+      <button onclick="closeBonusAlert()">Tutup</button>
+    </div>
+  </div>
 
-  <script>
-    function closeBonusAlert(){
-      document.getElementById("bonusAlert").style.display = "none";
-    }
-
-    function resetData(){
-      document.getElementById("inputData").value = "";
-      document.querySelector("#resultTable tbody").innerHTML = `
-        <tr class="empty-row">
-          <td colspan="8">Belum ada data yang diproses.</td>
-        </tr>
-      `;
-      closeBonusAlert();
-      document.getElementById("inputData").focus();
-    }
-
-    function prosesData(){
-      const input = document.getElementById("inputData").value.trim();
-
-      if(input === ""){
-        alert("Silakan masukkan data terlebih dahulu.");
-        return;
-      }
-
-      const lines = input
-        .split(/\r?\n/)
-        .map(item => item.trim())
-        .filter(Boolean);
-
-      const permainan = deteksiPermainan(lines);
-      const userId = deteksiUserId(lines);
-      const kodeTicket = deteksiKodeTicket(lines,input);
-      const totalCredit = hitungTotalCredit(lines);
-      const nilaiTaruhan = deteksiDebit(lines);
-      const totalKemenangan = formatNominal(totalCredit);
-
-      const dataUntukDisalin = [
-        userId,
-        "-",
-        "-",
-        permainan,
-        kodeTicket,
-        totalKemenangan,
-        nilaiTaruhan
-      ].join("\t");
-
-      const tbody = document.querySelector("#resultTable tbody");
-      tbody.innerHTML = "";
-
-      const tr = document.createElement("tr");
-      const dataKolom = [
-        userId,
-        "-",
-        "-",
-        permainan,
-        kodeTicket,
-        totalKemenangan,
-        nilaiTaruhan
-      ];
-
-      dataKolom.forEach(value => {
-        const td = document.createElement("td");
-        td.textContent = value || "-";
-        tr.appendChild(td);
-      });
-
-      const copyCell = document.createElement("td");
-      const copyButton = document.createElement("button");
-      copyButton.type = "button";
-      copyButton.className = "btn-copy";
-      copyButton.innerHTML = '<i class="fa-solid fa-copy"></i> Salin';
-      copyButton.dataset.copy = dataUntukDisalin;
-      copyButton.addEventListener("click", function(){
-        salinData(this);
-      });
-
-      copyCell.appendChild(copyButton);
-      tr.appendChild(copyCell);
-      tbody.appendChild(tr);
-
-      const taruhanAngka = parseNominal(nilaiTaruhan);
-      if(taruhanAngka > 0 && totalCredit >= taruhanAngka * 300){
-        document.getElementById("bonusAlert").style.display = "flex";
-      }
-    }
-
-    async function salinData(button){
-      const text = button.dataset.copy || "";
-
-      if(!text) return;
-
-      try{
-        await navigator.clipboard.writeText(text);
-      }catch(error){
-        const temp = document.createElement("textarea");
-        temp.value = text;
-        temp.style.position = "fixed";
-        temp.style.left = "-9999px";
-        document.body.appendChild(temp);
-        temp.select();
-        document.execCommand("copy");
-        temp.remove();
-      }
-
-      const oldContent = button.innerHTML;
-      button.innerHTML = '<i class="fa-solid fa-check"></i> Tersalin';
-      tampilkanToast();
-
-      setTimeout(() => {
-        button.innerHTML = oldContent;
-      },1200);
-    }
-
-    function tampilkanToast(){
-      const toast = document.getElementById("toast");
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"),1800);
-    }
-
-    function deteksiPermainan(lines){
-      const providers = [
-        "pgsoft","pragmatic play","habanero","spadegaming","jili","cq9",
-        "microgaming","playtech","nolimit","joker","fa chai","fastspin",
-        "yggdrasil","red tiger","relax gaming","netent","rtg","slot88",
-        "playstar","advantplay","live22","bigpot","skywind","ttg",
-        "onetouch","dragoon soft","funky games","playngo","booming games",
-        "evoplay","simpleplay"
-      ];
-
-      for(let i = 0; i < lines.length - 1; i++){
-        if(providers.some(provider => lines[i + 1].toLowerCase().includes(provider))){
-          return lines[i];
-        }
-      }
-
-      return "-";
-    }
-
-    function deteksiUserId(lines){
-      for(let i = 0; i < lines.length; i++){
-        if(/^ext\.?\s*id\s*:/i.test(lines[i]) && lines[i + 1]){
-          return lines[i + 1];
-        }
-      }
-
-      return "-";
-    }
-
-    function deteksiKodeTicket(lines,input){
-      for(let i = 0; i < lines.length; i++){
-        if(lines[i].toLowerCase() === "debit"){
-          for(let j = i - 1; j >= 0; j--){
-            const match = lines[j].match(/^(\d+)-\d+-201-0$/);
-            if(match) return match[1];
-          }
-        }
-      }
-
-      const creditMatch = input.match(/CR\d+-(\d+)-101-0/i);
-      if(creditMatch) return creditMatch[1];
-
-      const extMatch = input.match(/Ext\.\s*ID\s*:\s*(?:CR)?\d+-(\d+)-(?:101|201)-0/i);
-      if(extMatch) return extMatch[1];
-
-      return "-";
-    }
-
-    function hitungTotalCredit(lines){
-      let total = 0;
-
-      for(let i = 0; i < lines.length; i++){
-        if(lines[i].toLowerCase() === "credit"){
-          total += parseNominal(lines[i + 1] || "");
-        }
-      }
-
-      return total;
-    }
-
-    function deteksiDebit(lines){
-      for(let i = 0; i < lines.length; i++){
-        if(lines[i].toLowerCase() === "debit"){
-          return formatNominal(parseNominal(lines[i + 1] || ""));
-        }
-      }
-
-      return "-";
-    }
-
-    function parseNominal(text){
-      return Number(
-        String(text)
-          .replace(/IDR|RP/gi,"")
-          .replace(/[^0-9]/g,"")
-      ) || 0;
-    }
-
-    function formatNominal(number){
-      return Number(number).toLocaleString("en-US");
-    }
-
-    document.addEventListener("keydown", function(event){
-      if(event.key === "Escape") closeBonusAlert();
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
